@@ -1,0 +1,15 @@
+{
+  "name": "desafio-array-de-productos",
+  "version": "1.0.0",
+  "description": "Desafio: Array de productos",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Agustin Annacondia",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
