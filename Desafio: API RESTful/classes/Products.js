@@ -22,11 +22,12 @@ class Products {
     }
 
     updateProduct(product) {
-        const productInArray = this.#products.find(element => element?.id == product.id)
-        if(productInArray) {
-            this.#products = this.#products.map((element) => element.id == product.id ? product : element)
+        const productIndex = this.#products.findIndex(element => element?.id == product.id)
+        if(productIndex !== -1) {
+            this.#products[productIndex] = product
             return {
-                message: "Product has been updated"
+                message: "Product has been updated",
+                data: product
             }
         } else {
             return {
@@ -36,11 +37,13 @@ class Products {
     }
 
     deleteProduct(id) {
-        const product = this.#products.find(product => product?.id == id)
-        if(product) {
-            this.#products.splice(this.#products.indexOf(product), 1)
+        const productIndex = this.#products.findIndex(product => product?.id == id)
+        if(productIndex !== -1) {
+            const product = this.#products[productIndex]
+            this.#products.splice(productIndex, 1)
             return {
-                message: "Product has been deleted"
+                message: "Product has been deleted",
+                data: product
             }
         } else {
             return {
