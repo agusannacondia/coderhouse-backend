@@ -1,0 +1,1 @@
+Considero que la mejor opcion es EJS ya que la sintaxis me parece mucho mas legible que las otras opciones al ser parecido a HTML. 
