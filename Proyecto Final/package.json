@@ -2,13 +2,14 @@
     "name": "proyecto-final",
     "version": "1.0.0",
     "description": "Proyecto Final",
-    "main": "index.js",
+    "main": "app.js",
     "type": "module",
     "scripts": {
         "test": "npm run test:unit",
         "test:unit": "jest --coverage --detectOpenHandles --forceExit --config jest.config.js",
-        "start": "NODE_ENV=production node ./index.js",
-        "debug": "NODE_ENV=development nodemon --debug=5005 ./index.js",
+        "start": "NODE_ENV=production node ./app.js",
+        "start:watch": "NODE_ENV=development nodemon ./app.js",
+        "debug": "NODE_ENV=development nodemon --debug=5005 ./app.js",
         "build": "NODE_ENV=development webpack --config webpack.config.js",
         "watch": "NODE_ENV=development webpack --watch --config webpack.config.js",
         "dist": "NODE_ENV=production webpack --config webpack.config.js"
@@ -18,5 +19,9 @@
     "devDependencies": {
         "jest": "^27.0.5",
         "supertest": "^6.1.3"
+    },
+    "dependencies": {
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1"
     }
 }

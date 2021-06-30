@@ -8,7 +8,10 @@ describe("ROUTER /products", () => {
                 const response = await request(app).get("/list");
                 expect(typeof response).toBe(JSON);
             });
-            // Should respond with a 200 status code
+            test("Should respond with a 200 status code", async () => {
+                const response = await request(app).get("/list");
+                expect(response.statusCode()).toBe(200);
+            });
             test("Should specify json in the content type header", () => {
                 const response = await request(app).get("/list");
                 expect(response.headers["content-type"]).toEqual(
