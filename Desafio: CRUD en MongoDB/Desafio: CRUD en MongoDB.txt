@@ -1,0 +1,88 @@
+
+// Create 'ecommerce' database
+
+use ecommerce;
+
+// 1. Create 'messages' collection and insert 10 documents
+
+ db.messages.insert([
+     {id: 1, email: "email@test.com", text: "Hi there!", date: new Date("2021-12-07")},
+     {id: 2, email: "email2@test.com", text: "Hi there!", date: new Date("2021-12-07")},
+     {id: 3, email: "email3@test.com", text: "Hi there!", date: new Date("2021-12-07")},
+     {id: 4, email: "email4@test.com", text: "Hi there!", date: new Date("2021-12-07")},
+     {id: 5, email: "email5@test.com", text: "Hi there!", date: new Date("2021-12-07")},
+     {id: 6, email: "email6@test.com", text: "Hi there!", date: new Date("2021-12-07")},
+     {id: 7, email: "email7@test.com", text: "Hi there!", date: new Date("2021-12-07")},
+     {id: 8, email: "email8@test.com", text: "Hi there!", date: new Date("2021-12-07")},
+     {id: 9, email: "email9@test.com", text: "Hi there!", date: new Date("2021-12-07")},
+     {id: 10, email: "email10@test.com", text: "Hi there!", date: new Date("2021-12-07")},
+     ]);
+
+// 1. 2. Create 'products' collection and insert 10 documents
+
+ db.products.insert([
+     {id: 1, title: "Product 1", price: 200, thumbnail: "https://via.placeholder.com/150"},
+     {id: 2, title: "Product 2", price: 500, thumbnail: "https://via.placeholder.com/150"},
+     {id: 3, title: "Product 3", price: 1100, thumbnail: "https://via.placeholder.com/150"},
+     {id: 4, title: "Product 4", price: 1700, thumbnail: "https://via.placeholder.com/150"},
+     {id: 5, title: "Product 5", price: 2300, thumbnail: "https://via.placeholder.com/150"},
+     {id: 6, title: "Product 6", price: 2900, thumbnail: "https://via.placeholder.com/150"},
+     {id: 7, title: "Product 7", price: 3400, thumbnail: "https://via.placeholder.com/150"},
+     {id: 8, title: "Product 8", price: 4000, thumbnail: "https://via.placeholder.com/150"},
+     {id: 9, title: "Product 9", price: 4400, thumbnail: "https://via.placeholder.com/150"},
+     {id: 10, title: "Product 10", price: 4900, thumbnail: "https://via.placeholder.com/150"},
+     ]);
+
+// 3. List documents
+
+db.messages.find();
+db.products.find();
+
+// 4. Show quantity of documents per collection
+
+db.messages.countDocuments();
+db.products.countDocuments();
+
+// 5. a. Add product
+
+db.products.insert([{id: 11, title: "Product 11", price: 200, thumbnail: "https://via.placeholder.com/150"}])
+
+// 5. b. I. List products with a price lower than 1000 pesos
+
+db.products.find({ price:{ $lt: 1000 } })
+
+// 5. b. II. List products with a price between 1000 and 3000 pesos
+
+db.products.find({ $and:[{ price:{ $gte: 1000 } },{ price:{ $lte: 3000 }} ] })
+
+// 5. b. III. List products with a price higher than 3000 pesos
+
+db.products.find({ price:{ $gt: 3000 } })
+
+// 5. b. IV. Show the name of the third cheapest product
+
+db.products.find().sort({ price: 1 }).skip(2).limit(1)
+
+// 5. c. Update products, adding 'stock' field with a value of 100
+
+db.products.update({},{ $set: { stock: 100 } },{ multi: true })
+
+// 5. d. Update stock to 0 to products with a price higher than 4000 pesos
+
+db.products.update({ price: { $gt: 4000 } },{ $set: { stock: 0 } },{ multi: true })
+
+// 5. e. Delete products with a price lower than 1000 pesos
+
+db.products.remove({ price: { $lt: 1000 } })
+
+// 6. Create a user with username 'Pepe' and password 'asd456' who only has permissions to read ecommerce database
+
+db.createUser(
+  {
+    user: "Pepe",
+    pwd: "asd456",
+    roles: [
+       { role: "read", db: "ecommerce" }
+    ]
+  }
+)
