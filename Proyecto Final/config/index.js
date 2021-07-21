@@ -10,4 +10,7 @@ if (envFound.error) {
 
 export default {
     port: parseInt(process.env.PORT, 10),
+    url_local: process.env.URL_MONGODB_LOCAL,
+    url_remote: process.env.URL_MONGODB_REMOTE,
+    persistence: process.env.PERSISTENCE,
 };

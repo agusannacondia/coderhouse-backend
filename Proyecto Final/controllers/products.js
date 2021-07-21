@@ -1,143 +1,84 @@
-import fs from "fs";
+import knex from "knex";
+import { mysql } from "../config/database.js";
+
+const myKnex = knex(mysql);
 
 class Products {
-    #products;
     constructor() {
         try {
-            fs.writeFile(
-                `./storage/products.json`,
-                "[]",
-                { flag: "wx" },
-                (err) => {
-                    console.log(
-                        err
-                            ? "File already exists"
-                            : "File has been created correctly"
-                    );
+            myKnex.schema.hasTable("products").then((exists) => {
+                if (!exists) {
+                    return myKnex.schema.createTable("products", (table) => {
+                        table.increments("id").primary();
+                        table.string("title");
+                        table.float("price");
+                        table.string("thumbnail");
+                    });
                 }
-            );
-        } catch (error) {
-            throw error;
+            });
+        } catch (_error) {
+            return { error: "Error trying to create table" };
         }
     }
 
     async getProducts() {
         try {
-            const dataJson = await fs.promises.readFile(
-                "./storage/products.json",
-                "utf-8"
-            );
-            const products = JSON.parse(dataJson);
+            const products = await myKnex.from("products").select();
 
-            if (!Array.isArray(products))
-                return { error: "Error trying to read database" };
-
-            if (typeof products !== "object")
-                return { error: "Error trying to read database" };
+            if (products.length === 0)
+                return { error: "There are not products in the database" };
 
             return products;
         } catch (error) {
-            throw new Error("Error trying to read database");
+            return { error: "Error trying to read database" };
         }
     }
 
     async getProduct(id) {
         try {
-            const dataJson = await fs.promises.readFile(
-                "./storage/products.json",
-                "utf-8"
-            );
-            const products = JSON.parse(dataJson);
+            const products = await myKnex.from("products").where("id", "=", id);
 
-            if (!Array.isArray(products))
-                return { error: "Error trying to read database" };
+            if (products.length === 0)
+                return { error: "Product does not exist in database" };
 
-            const product = products.find((product) => product?.id == id);
-
-            if (typeof product !== "object")
-                return { error: "Product doesn't exist in database" };
-
-            return product;
+            return products[0];
         } catch (error) {
-            throw new Error("Error trying to read database");
+            return { error: "Error trying to read database" };
         }
     }
 
-    async addProduct(product) {
+    async addProduct({ title, price, thumbnail }) {
         try {
-            const products = await this.getProducts();
-
-            products.push({
-                ...product,
-                id: products.length,
+            await myKnex("products").insert({
+                title,
+                price,
+                thumbnail,
             });
-
-            await fs.promises.writeFile(
-                `./storage/products.json`,
-                JSON.stringify(products)
-            );
-
-            return {
-                message: "Product has been added correctly",
-            };
-        } catch (error) {
-            return {
-                error: "Error has ocurred while trying to save in database",
-            };
+            return { message: "Product has been added" };
+        } catch (err) {
+            return { error: "Error trying to save a product" };
         }
     }
 
-    async updateProduct(product) {
+    async updateProduct({ id, title = "", price = 0, thumbnail = "" }) {
         try {
-            const products = await this.getProducts();
-            const productInArray = products.find((item) => {
-                return item.id == id;
-            });
+            await myKnex
+                .from("products")
+                .where("id", id)
+                .update({ title, price, thumbnail });
 
-            if (!productInArray) return { error: "Product doesn´t exist" };
-
-            products = products.map((element) =>
-                element.id == product.id ? product : element
-            );
-
-            await fs.promises.writeFile(
-                `./storage/products.json`,
-                JSON.stringify(products)
-            );
-
-            return {
-                message: "Product has been updated",
-            };
+            return { message: "Product has been updated" };
         } catch (error) {
-            return {
-                error: "Error has ocurred while trying to update database",
-            };
+            return { error: "Error trying to update a product" };
         }
     }
 
     async deleteProduct(id) {
         try {
-            const products = await this.getProducts();
-            const product = products.find((item) => {
-                return item.id == id;
-            });
-
-            if (!product) return { error: "Product doesn´t exist" };
-
-            products.splice(products.indexOf(product), 1);
-
-            await fs.promises.writeFile(
-                `./storage/products.json`,
-                JSON.stringify(products)
-            );
-
-            return {
-                message: "Product has been deleted",
-            };
+            await myKnex.from("products").where("id", "=", id).del();
+            return { message: "Product has been deleted" };
         } catch (error) {
-            return {
-                error: "Error has ocurred while trying to delete from database",
-            };
+            return { error: "Error trying to delete a product" };
         }
     }
 }
