@@ -1,0 +1,31 @@
+{
+    "name": "desafio-login-por-formulario",
+    "version": "1.0.0",
+    "description": "Desafio: Login por formulario",
+    "main": "app.js",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Agustin Annacondia",
+    "license": "ISC",
+    "dependencies": {
+        "connect-mongo": "^4.4.1",
+        "ejs": "^3.1.6",
+        "express": "^4.17.1",
+        "express-session": "^1.17.2",
+        "faker": "^5.5.3",
+        "knex": "^0.95.6",
+        "mongoose": "^5.13.2",
+        "mysql": "^2.18.1",
+        "nodemon": "^2.0.9",
+        "normalizr": "^3.6.1",
+        "socket.io": "^4.1.2",
+        "sqlite3": "^5.0.2"
+    },
+    "devDependencies": {
+        "dotenv": "^10.0.0",
+        "jest": "^27.0.6",
+        "supertest": "^6.1.3"
+    }
+}
