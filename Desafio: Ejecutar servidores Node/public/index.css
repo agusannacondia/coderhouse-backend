@@ -1,0 +1,24 @@
+.message-email {
+    font-weight: bold;
+    color: blue;
+    display: inline-block;
+}
+
+.message-date {
+    color: brown;
+}
+
+.message-text {
+    font-style: italic;
+    color: green;
+} 
+
+#messages {
+    max-height: 600px;
+    overflow-y: scroll;
+}
+
+.message.container {
+    display: flex;
+    flex-direction: row;
+}
