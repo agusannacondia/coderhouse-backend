@@ -1,0 +1,2 @@
+artillery quick --count 20 -n 50 "http://localhost:8081/info" > resultWithoutConsoleLog.log
+artillery quick --count 20 -n 50 "http://localhost:8081/info" > resultWithConsoleLog.log
