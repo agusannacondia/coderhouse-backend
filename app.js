@@ -21,7 +21,6 @@ const args = minimist(process.argv.slice(2));
 const FACEBOOK_CLIENT_ID = args["FACEBOOK_CLIENT_ID"] || "535901190992405";
 const FACEBOOK_CLIENT_SECRET =
     args["FACEBOOK_CLIENT_SECRET"] || "8907de96464be5de2a6cb2d4c771858b";
-const PORT = args["FACEBOOK_CLIENT_ID"] || "8080";
 const MODE = args["MODE"] || "fork";
 
 process.on("exit", (code) => {
@@ -72,7 +71,7 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 
 server
-    .listen(config.port, () => {
+    .listen(process.env.PORT || 5000, () => {
         loggerConsole.log(
             "debug",
             `Servidor escuchando en http://localhost:${PORT}`
