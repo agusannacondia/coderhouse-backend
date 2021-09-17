@@ -63,7 +63,7 @@ app.use(
     })
 );
 
-app.use("/api", routes());
+app.use("/", routes());
 
 app.set("views", "./views");
 app.set("view engine", "ejs");
