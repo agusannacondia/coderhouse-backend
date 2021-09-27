@@ -9,7 +9,7 @@ import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
 import session from "express-session";
 import Messages from "./modules/messages/controller.js";
-import Products from "./modules/products/controller.js";
+import Products from "./modules/products/dao/productsMongoDAO.js";
 import config from "./config/index.js";
 import routes from "./api/index.js";
 import minimist from "minimist";
